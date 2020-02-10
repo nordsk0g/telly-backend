@@ -1,0 +1,10 @@
+post http://localhost:3001/reviews
+Content-Type: application/json
+
+{
+    "title": "This is a test title",
+    "content": "This is test content",
+    "author": "Test Author",
+    "likes": 0,
+    "comments": []
+}
