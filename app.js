@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
-const uuidv1 = require("uuid/v1");
 const reviewsRouter = require("./controllers/reviews");
 const searchRouter = require("./controllers/search");
 const showsRouter = require("./controllers/shows");

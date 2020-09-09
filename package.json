@@ -13,9 +13,10 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "imdb-scrapper": "^2.3.0",
-    "mongoose": "^5.8.11",
-    "nodemon": "^2.0.2",
+    "imdb-scrapper": "^2.4.0",
+    "mongoose": "^5.10.3",
+    "nodemon": "^2.0.4",
+    "slugify": "^1.4.5",
     "uuid": "^3.4.0"
   }
 }
