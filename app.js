@@ -5,11 +5,10 @@ const cors = require("cors");
 const reviewsRouter = require("./controllers/reviews");
 const searchRouter = require("./controllers/search");
 const showsRouter = require("./controllers/shows");
+const actorRouter = require("./controllers/actor");
 const trendingRouter = require("./controllers/trending");
 const middleware = require("./utils/middleware");
 const mongoose = require("mongoose");
-const imdbScrapper = require("../Open Source contributions/imdb-scrapper/index.js");
-// const imdbScrapper = require("imdb-scrapper");
 
 // TODO: mongoose connect
 
@@ -21,7 +20,8 @@ app.use(middleware.requestLogger);
 app.use("/reviews", reviewsRouter);
 app.use("/search", searchRouter);
 app.use("/shows", showsRouter);
-app.use("/trending", trendingRouter);
+app.use("/actor", actorRouter);
+// app.use("/trending", trendingRouter);
 
 app.use(middleware.unknownEndpoint);
 // TODO: errorHandler middleware

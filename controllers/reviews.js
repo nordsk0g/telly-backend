@@ -21,7 +21,7 @@ let reviews = [
     title: "The Lighthouse",
     image:
       "https://m.media-amazon.com/images/M/MV5BZmE0MGJhNmYtOWNjYi00Njc5LWE2YjEtMWMxZTVmODUwMmMxXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    content: "Robert Pattinson sucks in it",
+    content: "Amazing!",
     user: "nordskog",
     likes: 500,
     date: "2019-05-30T18:39:34.091Z"

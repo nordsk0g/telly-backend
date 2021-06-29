@@ -1,5 +1,5 @@
 const searchRouter = require("express").Router();
-const imdbScrapper = require("../../Open Source contributions/imdb-scrapper/index");
+const imdbScrapper = require("imdb-scrapper");
 
 searchRouter.get("/", async (req, res, next) => {
   let result;
