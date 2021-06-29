@@ -1,7 +1,6 @@
 const app = require("./app");
 const http = require("http");
-const config = require("./utils/config");
-const pool = require("./db"):
+const pool = require("./db/db");
 
 const server = http.createServer(app);
 

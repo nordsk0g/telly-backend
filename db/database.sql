@@ -1,7 +1,11 @@
 CREATE DATABASE telly;
 
 CREATE TABLE users(
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(30),
-    password VARCHAR(64)
+    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_name VARCHAR(255) NOT NULL,
+    user_email VARCHAR(255) NOT NULL,
+    user_password VARCHAR(255) NOT NULL
 );
+
+-- insert fake users
+INSERT INTO users (user_name, user_email, user_password) VALUES ('big daddy', 'bigdaddy@email.com', 'password4me');
