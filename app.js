@@ -8,7 +8,8 @@ const showsRouter = require("./controllers/shows");
 const actorRouter = require("./controllers/actor");
 const authRouter = require("./controllers/auth");
 const trendingRouter = require("./controllers/trending");
-const middleware = require("./utils/middleware");
+const utilityMiddleware = require("./middleware/middleware");
+const userAuthorisation = require("./middleware/authorisation");
 const mongoose = require("mongoose");
 
 // TODO: mongoose connect
@@ -16,7 +17,7 @@ const mongoose = require("mongoose");
 app.use(express.json());
 app.use(cors());
 // app.use(express.static("build"));
-app.use(middleware.requestLogger);
+app.use(utilityMiddleware.requestLogger);
 
 
 // ROUTES
@@ -29,7 +30,8 @@ app.use("/actor", actorRouter);
 // REGISTRATION and LOGIN
 app.use("/auth", authRouter)
 
-app.use(middleware.unknownEndpoint);
+app.use(utilityMiddleware.unknownEndpoint);
+app.use(userAuthorisation)
 // TODO: errorHandler middleware
 
 module.exports = app;
