@@ -2,7 +2,6 @@ const authRouter = require("express").Router();
 const pool = require("../db/db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
-const { JsonWebTokenError } = require("jsonwebtoken");
 const joi = require("joi")
 const passwordComplexity = require("joi-password-complexity");
 
@@ -20,6 +19,10 @@ authRouter.post("/register", async(req, res) => {
 
         const result = await validateUser({name, email, password});
         console.log(result);
+
+        if (result.error) {
+            res.status(422).send(result.error.details[0].message)
+        }
 
         // Bcrypt user's password
         const saltRound = 10;
@@ -76,7 +79,7 @@ const complexityOptions = {
     upperCase: 1,
     numeric: 1,
     symbol: 1,
-    requirementCount: 2,
+    requirementCount: 4,
 }
 
 function validateUser(user) {
