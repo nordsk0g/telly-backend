@@ -4,12 +4,14 @@ const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const joi = require("joi")
 const passwordComplexity = require("joi-password-complexity");
+const authorisation = require("../middleware/authorisation")
 
 // REGISTRATION
 authRouter.post("/register", async(req, res) => {
     try {
+        console.log(req.body);
         // destruct req.body (name, email, password)
-        const { name, email, password } = req.body;
+        const { username, email, password } = req.body;
         // check if user exists (then throw error)
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
 
@@ -17,7 +19,7 @@ authRouter.post("/register", async(req, res) => {
             return res.status(401).send("Email is already in use.");
         }
 
-        const result = await validateUser({name, email, password});
+        const result = await validateUser({username, email, password});
         console.log(result);
 
         if (result.error) {
@@ -31,12 +33,12 @@ authRouter.post("/register", async(req, res) => {
         const bcryptPassword = await bcrypt.hash(password, salt);
 
         // Enter user in database
-        const newUser = await pool.query("INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *", [name, email, bcryptPassword])
+        const newUser = await pool.query("INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *", [username, email, bcryptPassword])
 
         // Generate JWT token
         const token = jwtGenerator(newUser.rows[0].user_id);
 
-        res.json({ token})
+        res.json({ token })
 
     } catch (err) {
         console.error(err.message);
@@ -63,28 +65,38 @@ authRouter.post("/login", async(req, res) => {
         }
 
         // Step Four - Return JWT Token
-        const token = jwtGenerator(user.rows[0].user_id);
-
-        res.json({ token})
+        const token = await jwtGenerator(user.rows[0].user_id);
+        
+        res.json({ token })
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server Error")
+        res.status(500).send("Server Error");
+    }
+})
+
+// VERIFY JWT
+authRouter.get('/verified', authorisation, async(req, res) => {
+    try {
+        res.json(true);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
     }
 })
 
 const complexityOptions = {
     min: 6,
-    max: 1024,
-    lowerCase: 1,
-    upperCase: 1,
-    numeric: 1,
-    symbol: 1,
-    requirementCount: 4,
+    max: 1024
+    // lowerCase: 1,
+    // upperCase: 1,
+    // numeric: 1,
+    // symbol: 1,
+    // requirementCount: 4,
 }
 
 function validateUser(user) {
     const schema = joi.object({
-        name: joi.string().alphanum().min(3).required(),
+        username: joi.string().alphanum().min(3).required(),
         email: joi.string().email().required(),
         password: passwordComplexity(complexityOptions).required()
     })
